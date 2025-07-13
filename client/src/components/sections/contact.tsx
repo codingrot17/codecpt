@@ -110,7 +110,7 @@ export default function Contact() {
                             <Input
                               placeholder="Your full name"
                               {...field}
-                              className="bg-primary-800/50 border-gray-600"
+                              className="bg-primary-800/50 border-gray-600 text-black"
                             />
                           </FormControl>
                           <FormMessage />
@@ -129,7 +129,7 @@ export default function Contact() {
                               placeholder="your.email@example.com"
                               type="email"
                               {...field}
-                              className="bg-primary-800/50 border-gray-600"
+                              className="bg-primary-800/50 border-gray-600 text-black"
                             />
                           </FormControl>
                           <FormMessage />
@@ -148,7 +148,7 @@ export default function Contact() {
                           <Input
                             placeholder="Project inquiry, collaboration, etc."
                             {...field}
-                            className="bg-primary-800/50 border-gray-600"
+                            className="bg-primary-800/50 border-gray-600 text-black"
                           />
                         </FormControl>
                         <FormMessage />
@@ -165,7 +165,7 @@ export default function Contact() {
                         <FormControl>
                           <Textarea
                             placeholder="Tell me about your project or what you'd like to discuss..."
-                            className="bg-primary-800/50 border-gray-600 min-h-32"
+                            className="bg-primary-800/50 border-gray-600 text-black min-h-32"
                             {...field}
                           />
                         </FormControl>
@@ -212,7 +212,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold">Email</h4>
-                    <p className="text-gray-300">ademola.ayomide@email.com</p>
+                    <p className="text-gray-300">codingrot001@gmail.com</p>
+                    <p className="text-gray-300">ademolaemmanuel645@gmail.com</p>
                   </div>
                 </div>
 
@@ -222,7 +223,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold">Phone</h4>
-                    <p className="text-gray-300">+234 (0) 123 456 789</p>
+                    <p className="text-gray-300">+234 (9) 033 747 946</p>
+                    <p className="text-gray-300">+234 (8) 081 779 959</p>
                   </div>
                 </div>
 

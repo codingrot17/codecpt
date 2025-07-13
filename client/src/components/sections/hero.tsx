@@ -17,7 +17,7 @@ export default function Hero() {
         >
           <div className="w-32 h-32 mx-auto mb-8 rounded-full overflow-hidden border-4 border-blue-400 glow-effect">
             <img
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&h=500"
+              src="https://i.ibb.co/n8DLPjn3/IMG-20241225-WA0002-1.jpg"
               alt="Ademola Emmanuel Ayomide - Full-Stack Developer"
               className="w-full h-full object-cover"
             />

@@ -3,8 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -50,11 +62,8 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
-    mutationFn: (data: InsertProject) => apiRequest("/api/projects", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
-    }),
+    mutationFn: (data: InsertProject) =>
+      apiRequest("POST", "/api/projects", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
       toast({ title: "Success", description: "Project created successfully" });
@@ -73,16 +82,17 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
       });
     },
     onError: () => {
-      toast({ title: "Error", description: "Failed to create project", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to create project",
+        variant: "destructive",
+      });
     },
   });
 
   const updateMutation = useMutation({
-    mutationFn: (data: InsertProject) => apiRequest(`/api/projects/${project?.id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
-    }),
+    mutationFn: (data: InsertProject) =>
+      apiRequest("PUT", `/api/projects/${project?.id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
       toast({ title: "Success", description: "Project updated successfully" });
@@ -90,7 +100,11 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
       if (onClose) onClose();
     },
     onError: () => {
-      toast({ title: "Error", description: "Failed to update project", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to update project",
+        variant: "destructive",
+      });
     },
   });
 
@@ -104,7 +118,10 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
   };
 
   const addTechnology = () => {
-    if (newTechnology.trim() && !formData.technologies.includes(newTechnology.trim())) {
+    if (
+      newTechnology.trim() &&
+      !formData.technologies.includes(newTechnology.trim())
+    ) {
       setFormData({
         ...formData,
         technologies: [...formData.technologies, newTechnology.trim()],
@@ -116,7 +133,7 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
   const removeTechnology = (tech: string) => {
     setFormData({
       ...formData,
-      technologies: formData.technologies.filter(t => t !== tech),
+      technologies: formData.technologies.filter((t) => t !== tech),
     });
   };
 
@@ -133,7 +150,7 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
   const removeFeature = (feature: string) => {
     setFormData({
       ...formData,
-      features: formData.features.filter(f => f !== feature),
+      features: formData.features.filter((f) => f !== feature),
     });
   };
 
@@ -161,11 +178,15 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title" className="text-white">Title</Label>
+            <Label htmlFor="title" className="text-white">
+              Title
+            </Label>
             <Input
               id="title"
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
               className="bg-slate-700 border-slate-600 text-white"
               placeholder="Enter project title"
               required
@@ -173,11 +194,15 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-white">Description</Label>
+            <Label htmlFor="description" className="text-white">
+              Description
+            </Label>
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               className="bg-slate-700 border-slate-600 text-white"
               placeholder="Describe your project"
               rows={4}
@@ -186,17 +211,25 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-white">Category</Label>
+            <Label htmlFor="category" className="text-white">
+              Category
+            </Label>
             <Select
               value={formData.category}
-              onValueChange={(value) => setFormData({ ...formData, category: value })}
+              onValueChange={(value) =>
+                setFormData({ ...formData, category: value })
+              }
             >
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent className="bg-slate-700 border-slate-600">
                 {projectCategories.map((category) => (
-                  <SelectItem key={category.value} value={category.value} className="text-white">
+                  <SelectItem
+                    key={category.value}
+                    value={category.value}
+                    className="text-white"
+                  >
                     {category.label}
                   </SelectItem>
                 ))}
@@ -210,7 +243,9 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
               <Input
                 value={newTechnology}
                 onChange={(e) => setNewTechnology(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addTechnology())}
+                onKeyPress={(e) =>
+                  e.key === "Enter" && (e.preventDefault(), addTechnology())
+                }
                 className="bg-slate-700 border-slate-600 text-white"
                 placeholder="Add technology"
               />
@@ -224,7 +259,11 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
               {formData.technologies.map((tech, index) => (
-                <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                <Badge
+                  key={index}
+                  variant="secondary"
+                  className="flex items-center gap-1"
+                >
                   {tech}
                   <Button
                     type="button"
@@ -246,7 +285,9 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
               <Input
                 value={newFeature}
                 onChange={(e) => setNewFeature(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addFeature())}
+                onKeyPress={(e) =>
+                  e.key === "Enter" && (e.preventDefault(), addFeature())
+                }
                 className="bg-slate-700 border-slate-600 text-white"
                 placeholder="Add feature"
               />
@@ -260,7 +301,11 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
               {formData.features.map((feature, index) => (
-                <Badge key={index} variant="outline" className="flex items-center gap-1">
+                <Badge
+                  key={index}
+                  variant="outline"
+                  className="flex items-center gap-1"
+                >
                   {feature}
                   <Button
                     type="button"
@@ -278,22 +323,30 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="liveUrl" className="text-white">Live URL (optional)</Label>
+              <Label htmlFor="liveUrl" className="text-white">
+                Live URL (optional)
+              </Label>
               <Input
                 id="liveUrl"
                 value={formData.liveUrl}
-                onChange={(e) => setFormData({ ...formData, liveUrl: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, liveUrl: e.target.value })
+                }
                 className="bg-slate-700 border-slate-600 text-white"
                 placeholder="https://example.com"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="githubUrl" className="text-white">GitHub URL (optional)</Label>
+              <Label htmlFor="githubUrl" className="text-white">
+                GitHub URL (optional)
+              </Label>
               <Input
                 id="githubUrl"
                 value={formData.githubUrl}
-                onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, githubUrl: e.target.value })
+                }
                 className="bg-slate-700 border-slate-600 text-white"
                 placeholder="https://github.com/username/repo"
               />
@@ -301,11 +354,15 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="imageUrl" className="text-white">Image URL (optional)</Label>
+            <Label htmlFor="imageUrl" className="text-white">
+              Image URL (optional)
+            </Label>
             <Input
               id="imageUrl"
               value={formData.imageUrl}
-              onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, imageUrl: e.target.value })
+              }
               className="bg-slate-700 border-slate-600 text-white"
               placeholder="https://example.com/image.jpg"
             />
@@ -315,7 +372,9 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
             <Checkbox
               id="featured"
               checked={formData.featured}
-              onCheckedChange={(checked) => setFormData({ ...formData, featured: checked as boolean })}
+              onCheckedChange={(checked) =>
+                setFormData({ ...formData, featured: checked as boolean })
+              }
             />
             <Label htmlFor="featured" className="text-white">
               Featured project
@@ -337,7 +396,7 @@ export function ProjectForm({ project, onClose }: ProjectFormProps) {
               disabled={isLoading}
               className="bg-purple-600 hover:bg-purple-700"
             >
-              {isLoading ? "Saving..." : (project ? "Update" : "Create")}
+              {isLoading ? "Saving..." : project ? "Update" : "Create"}
             </Button>
           </div>
         </form>

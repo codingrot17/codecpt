@@ -68,7 +68,16 @@ export function TechStackForm({ techStack, onClose }: TechStackFormProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tech-stacks"] });
       toast({ title: "Success", description: "Tech stack saved successfully" });
-      onClose?.();
+      setOpen(false);
+      if (onClose) onClose();
+      setFormData({
+        name: "",
+        icon: "",
+        progress: 50,
+        category: 'frontend',
+        color: "bg-blue-500/20",
+       
+      });
     },
     onError: (err: Error) => {
       toast({
@@ -85,7 +94,8 @@ export function TechStackForm({ techStack, onClose }: TechStackFormProps) {
     onSuccess: () => {
       toast({ title: "Success", description: "Tech stack saved successfully" });
       queryClient.invalidateQueries({ queryKey: ["tech-stacks"] });
-      onClose?.();
+      setOpen(false);
+      if (onClose) onClose();
     },
     onError: (err: Error) => {
       toast({
