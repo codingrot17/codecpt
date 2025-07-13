@@ -2,8 +2,20 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -51,37 +63,36 @@ export function TechStackForm({ techStack, onClose }: TechStackFormProps) {
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
-    mutationFn: (data: InsertTechStack) => apiRequest("/api/tech-stacks", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
-    }),
+    mutationFn: (data: InsertTechStack) =>
+      apiRequest("POST", "/api/tech-stacks", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/tech-stacks"] });
-      toast({ title: "Success", description: "Tech stack created successfully" });
-      setOpen(false);
-      if (onClose) onClose();
-      setFormData({ name: "", icon: "", progress: 50, category: "frontend", color: "bg-blue-500/20" });
+      queryClient.invalidateQueries({ queryKey: ["tech-stacks"] });
+      toast({ title: "Success", description: "Tech stack saved successfully" });
+      onClose?.();
     },
-    onError: () => {
-      toast({ title: "Error", description: "Failed to create tech stack", variant: "destructive" });
+    onError: (err: Error) => {
+      toast({
+        title: "Error",
+        description: err.message,
+        variant: "destructive",
+      });
     },
   });
 
   const updateMutation = useMutation({
-    mutationFn: (data: InsertTechStack) => apiRequest(`/api/tech-stacks/${techStack?.id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
-    }),
+    mutationFn: (data: InsertTechStack) =>
+      apiRequest("PUT", `/api/tech-stacks/${techStack?.id}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/tech-stacks"] });
-      toast({ title: "Success", description: "Tech stack updated successfully" });
-      setOpen(false);
-      if (onClose) onClose();
+      toast({ title: "Success", description: "Tech stack saved successfully" });
+      queryClient.invalidateQueries({ queryKey: ["tech-stacks"] });
+      onClose?.();
     },
-    onError: () => {
-      toast({ title: "Error", description: "Failed to update tech stack", variant: "destructive" });
+    onError: (err: Error) => {
+      toast({
+        title: "Error",
+        description: err.message,
+        variant: "destructive",
+      });
     },
   });
 
@@ -118,11 +129,15 @@ export function TechStackForm({ techStack, onClose }: TechStackFormProps) {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-white">Name</Label>
+            <Label htmlFor="name" className="text-white">
+              Name
+            </Label>
             <Input
               id="name"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               className="bg-slate-700 border-slate-600 text-white"
               placeholder="e.g., React, Node.js"
               required
@@ -130,11 +145,15 @@ export function TechStackForm({ techStack, onClose }: TechStackFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="icon" className="text-white">Icon (Emoji)</Label>
+            <Label htmlFor="icon" className="text-white">
+              Icon (Emoji)
+            </Label>
             <Input
               id="icon"
               value={formData.icon}
-              onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, icon: e.target.value })
+              }
               className="bg-slate-700 border-slate-600 text-white"
               placeholder="e.g., ⚛️, 🟢, 🔴"
               required
@@ -142,17 +161,25 @@ export function TechStackForm({ techStack, onClose }: TechStackFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-white">Category</Label>
+            <Label htmlFor="category" className="text-white">
+              Category
+            </Label>
             <Select
               value={formData.category}
-              onValueChange={(value) => setFormData({ ...formData, category: value })}
+              onValueChange={(value) =>
+                setFormData({ ...formData, category: value })
+              }
             >
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent className="bg-slate-700 border-slate-600">
                 {techCategories.map((category) => (
-                  <SelectItem key={category.value} value={category.value} className="text-white">
+                  <SelectItem
+                    key={category.value}
+                    value={category.value}
+                    className="text-white"
+                  >
                     {category.label}
                   </SelectItem>
                 ))}
@@ -161,17 +188,25 @@ export function TechStackForm({ techStack, onClose }: TechStackFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="color" className="text-white">Color</Label>
+            <Label htmlFor="color" className="text-white">
+              Color
+            </Label>
             <Select
               value={formData.color}
-              onValueChange={(value) => setFormData({ ...formData, color: value })}
+              onValueChange={(value) =>
+                setFormData({ ...formData, color: value })
+              }
             >
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="Select color" />
               </SelectTrigger>
               <SelectContent className="bg-slate-700 border-slate-600">
                 {colorOptions.map((color) => (
-                  <SelectItem key={color.value} value={color.value} className="text-white">
+                  <SelectItem
+                    key={color.value}
+                    value={color.value}
+                    className="text-white"
+                  >
                     <div className="flex items-center gap-2">
                       <div className={`w-4 h-4 rounded ${color.color}`} />
                       {color.label}
@@ -188,7 +223,9 @@ export function TechStackForm({ techStack, onClose }: TechStackFormProps) {
             </Label>
             <Slider
               value={[formData.progress]}
-              onValueChange={(value) => setFormData({ ...formData, progress: value[0] })}
+              onValueChange={(value) =>
+                setFormData({ ...formData, progress: value[0] })
+              }
               max={100}
               min={0}
               step={5}
@@ -211,7 +248,7 @@ export function TechStackForm({ techStack, onClose }: TechStackFormProps) {
               disabled={isLoading}
               className="bg-blue-600 hover:bg-blue-700"
             >
-              {isLoading ? "Saving..." : (techStack ? "Update" : "Create")}
+              {isLoading ? "Saving..." : techStack ? "Update" : "Create"}
             </Button>
           </div>
         </form>

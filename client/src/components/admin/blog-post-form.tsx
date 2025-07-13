@@ -3,8 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -43,14 +55,14 @@ export function BlogPostForm({ blogPost, onClose }: BlogPostFormProps) {
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
-    mutationFn: (data: InsertBlogPost) => apiRequest("/api/blog-posts", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
-    }),
+    mutationFn: (data: InsertBlogPost) =>
+      apiRequest("POST", `/api/blog-posts`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
-      toast({ title: "Success", description: "Blog post created successfully" });
+      toast({
+        title: "Success",
+        description: "Blog post created successfully",
+      });
       setOpen(false);
       if (onClose) onClose();
       setFormData({
@@ -64,24 +76,32 @@ export function BlogPostForm({ blogPost, onClose }: BlogPostFormProps) {
       });
     },
     onError: () => {
-      toast({ title: "Error", description: "Failed to create blog post", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to create blog post",
+        variant: "destructive",
+      });
     },
   });
 
   const updateMutation = useMutation({
-    mutationFn: (data: InsertBlogPost) => apiRequest(`/api/blog-posts/${blogPost?.id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
-    }),
+    mutationFn: (data: InsertBlogPost) =>
+      apiRequest("PUT", `/api/blog-posts/${blogPost?.id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
-      toast({ title: "Success", description: "Blog post updated successfully" });
+      toast({
+        title: "Success",
+        description: "Blog post updated successfully",
+      });
       setOpen(false);
       if (onClose) onClose();
     },
     onError: () => {
-      toast({ title: "Error", description: "Failed to update blog post", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to update blog post",
+        variant: "destructive",
+      });
     },
   });
 
@@ -133,7 +153,9 @@ export function BlogPostForm({ blogPost, onClose }: BlogPostFormProps) {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title" className="text-white">Title</Label>
+            <Label htmlFor="title" className="text-white">
+              Title
+            </Label>
             <Input
               id="title"
               value={formData.title}
@@ -145,11 +167,15 @@ export function BlogPostForm({ blogPost, onClose }: BlogPostFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="slug" className="text-white">Slug</Label>
+            <Label htmlFor="slug" className="text-white">
+              Slug
+            </Label>
             <Input
               id="slug"
               value={formData.slug}
-              onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, slug: e.target.value })
+              }
               className="bg-slate-700 border-slate-600 text-white"
               placeholder="url-friendly-slug"
               required
@@ -157,11 +183,15 @@ export function BlogPostForm({ blogPost, onClose }: BlogPostFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="excerpt" className="text-white">Excerpt</Label>
+            <Label htmlFor="excerpt" className="text-white">
+              Excerpt
+            </Label>
             <Textarea
               id="excerpt"
               value={formData.excerpt}
-              onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, excerpt: e.target.value })
+              }
               className="bg-slate-700 border-slate-600 text-white"
               placeholder="Brief description of the blog post"
               rows={3}
@@ -170,11 +200,15 @@ export function BlogPostForm({ blogPost, onClose }: BlogPostFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="content" className="text-white">Content</Label>
+            <Label htmlFor="content" className="text-white">
+              Content
+            </Label>
             <Textarea
               id="content"
               value={formData.content}
-              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, content: e.target.value })
+              }
               className="bg-slate-700 border-slate-600 text-white"
               placeholder="Full blog post content"
               rows={8}
@@ -183,17 +217,25 @@ export function BlogPostForm({ blogPost, onClose }: BlogPostFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-white">Category</Label>
+            <Label htmlFor="category" className="text-white">
+              Category
+            </Label>
             <Select
               value={formData.category}
-              onValueChange={(value) => setFormData({ ...formData, category: value })}
+              onValueChange={(value) =>
+                setFormData({ ...formData, category: value })
+              }
             >
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent className="bg-slate-700 border-slate-600">
                 {blogCategories.map((category) => (
-                  <SelectItem key={category.value} value={category.value} className="text-white">
+                  <SelectItem
+                    key={category.value}
+                    value={category.value}
+                    className="text-white"
+                  >
                     {category.label}
                   </SelectItem>
                 ))}
@@ -202,11 +244,15 @@ export function BlogPostForm({ blogPost, onClose }: BlogPostFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="imageUrl" className="text-white">Image URL (optional)</Label>
+            <Label htmlFor="imageUrl" className="text-white">
+              Image URL (optional)
+            </Label>
             <Input
               id="imageUrl"
               value={formData.imageUrl}
-              onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, imageUrl: e.target.value })
+              }
               className="bg-slate-700 border-slate-600 text-white"
               placeholder="https://example.com/image.jpg"
             />
@@ -216,7 +262,9 @@ export function BlogPostForm({ blogPost, onClose }: BlogPostFormProps) {
             <Checkbox
               id="featured"
               checked={formData.featured}
-              onCheckedChange={(checked) => setFormData({ ...formData, featured: checked as boolean })}
+              onCheckedChange={(checked) =>
+                setFormData({ ...formData, featured: checked as boolean })
+              }
             />
             <Label htmlFor="featured" className="text-white">
               Featured post
@@ -238,7 +286,7 @@ export function BlogPostForm({ blogPost, onClose }: BlogPostFormProps) {
               disabled={isLoading}
               className="bg-green-600 hover:bg-green-700"
             >
-              {isLoading ? "Saving..." : (blogPost ? "Update" : "Create")}
+              {isLoading ? "Saving..." : blogPost ? "Update" : "Create"}
             </Button>
           </div>
         </form>
