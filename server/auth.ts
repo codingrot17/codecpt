@@ -5,11 +5,10 @@ import {
     type NextFunction
 } from "express";
 import { storage } from "./storage";
+import crypto from "crypto";
 
 // Simple password hashing (for demo - in production use bcrypt)
 function hashPassword(password: string): string {
-    // Using Node's built-in crypto for simplicity
-    const crypto = require("crypto");
     return crypto.createHash("sha256").update(password).digest("hex");
 }
 
