@@ -5,15 +5,20 @@ import {
     type NextFunction
 } from "express";
 import { storage } from "./storage";
-import crypto from "crypto";
+import bcrypt from "bcryptjs";
 
-// Simple password hashing (for demo - in production use bcrypt)
-function hashPassword(password: string): string {
-    return crypto.createHash("sha256").update(password).digest("hex");
+// Secure password hashing with bcrypt (production-ready)
+const SALT_ROUNDS = 12; // Adjustable: 10-14 recommended
+
+async function hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, SALT_ROUNDS);
 }
 
-function verifyPassword(password: string, hash: string): boolean {
-    return hashPassword(password) === hash;
+async function verifyPassword(
+    password: string,
+    hash: string
+): Promise<boolean> {
+    return bcrypt.compare(password, hash);
 }
 
 // Middleware to check if user is authenticated
@@ -39,13 +44,13 @@ authRouter.post("/login", async (req, res) => {
 
         // Get user from database
         const user = await storage.getUserByUsername(username);
-
         if (!user) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        // Verify password
-        if (!verifyPassword(password, user.password)) {
+        // Verify password with bcrypt
+        const isValidPassword = await verifyPassword(password, user.password);
+        if (!isValidPassword) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
